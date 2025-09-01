@@ -59,6 +59,10 @@
             flex-wrap: wrap;
         }
         
+        .stat-item {
+            margin: 5px 10px;
+        }
+        
         .cookie-count {
             font-size: 1.8rem;
             font-weight: bold;
@@ -68,6 +72,11 @@
         .cps {
             font-size: 1.2rem;
             color: #b5838d;
+        }
+        
+        .cpc {
+            font-size: 1.2rem;
+            color: #9a8c98;
         }
         
         .game-area {
@@ -335,8 +344,15 @@
         <header>
             <h1>Cookie Clicker</h1>
             <div class="stats">
-                <div class="cookie-count">Cookies: <span id="cookies">0</span></div>
-                <div class="cps">Per Second: <span id="cps">0</span></div>
+                <div class="stat-item">
+                    <div class="cookie-count">Cookies: <span id="cookies">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="cps">Per Second: <span id="cps">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="cpc">Per Click: <span id="cpc">1</span></div>
+                </div>
             </div>
             <button class="settings-btn" id="settings-btn">Settings</button>
         </header>
@@ -527,7 +543,7 @@
             {
                 id: "time_machine",
                 name: "Time Machine",
-                description: "Brings cookies from the past before they were eaten",
+                description: "Brows cookies from the past before they were eaten",
                 baseCost: 14000000000000,
                 cost: 14000000000000,
                 count: 0,
@@ -654,6 +670,7 @@
         // DOM elements
         const cookiesElement = document.getElementById('cookies');
         const cpsElement = document.getElementById('cps');
+        const cpcElement = document.getElementById('cpc');
         const cookieElement = document.getElementById('cookie');
         const upgradesContainer = document.getElementById('upgrades-container');
         const settingsBtn = document.getElementById('settings-btn');
@@ -812,9 +829,10 @@
         
         // Update the UI
         function updateUI() {
-            // Update cookie count and CPS
+            // Update cookie count, CPS, and CPC
             cookiesElement.textContent = formatNumber(cookies);
             cpsElement.textContent = formatNumber(cps);
+            cpcElement.textContent = formatNumber(clickValue);
             
             // Update upgrade buttons
             upgrades.forEach(upgrade => {
@@ -846,7 +864,7 @@
         // Format large numbers with commas
         function formatNumber(num) {
             if (num === Infinity) return "∞";
-            if (num < 1000) return Math.floor(num);
+            if (num < 1000) return Math.floor(num * 100) / 100; // Keep 2 decimal places for small numbers
             if (num < 1000000) return (num/1000).toFixed(1) + 'K';
             if (num < 1000000000) return (num/1000000).toFixed(1) + 'M';
             if (num < 1000000000000) return (num/1000000000).toFixed(1) + 'B';
