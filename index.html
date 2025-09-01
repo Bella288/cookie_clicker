@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -51,6 +51,9 @@
             width: 100%;
             text-align: center;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
         }
         
         .cookie-count {
@@ -73,6 +76,7 @@
         .cookie-container {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
@@ -80,90 +84,77 @@
         .cookie {
             width: 300px;
             height: 300px;
-            background-color: #e5989b;
-            border-radius: 50%;
             cursor: pointer;
             position: relative;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             transition: transform 0.1s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             user-select: none;
+            margin-bottom: 20px;
         }
         
-        .cookie:active {
+        .cookie img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.1s;
+        }
+        
+        .cookie:active img {
             transform: scale(0.95);
         }
         
-        .cookie::before {
-            content: "";
-            position: absolute;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ffb4a2 0%, #e5989b 80%);
-        }
-        
-        .cookie-chips {
-            position: absolute;
+        .upgrades-section {
+            display: flex;
+            flex-direction: column;
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
+            gap: 20px;
         }
         
-        .chip {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #6d6875;
-            border-radius: 50%;
-        }
-        
-        .chip:nth-child(1) { top: 25%; left: 25%; }
-        .chip:nth-child(2) { top: 35%; right: 30%; }
-        .chip:nth-child(3) { bottom: 30%; left: 20%; }
-        .chip:nth-child(4) { bottom: 40%; right: 25%; }
-        .chip:nth-child(5) { top: 45%; left: 40%; }
-        .chip:nth-child(6) { top: 60%; right: 40%; }
-        
-        .upgrades {
-            flex: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        
-        .upgrades h2 {
-            text-align: center;
-            margin-bottom: 15px;
+        .section-title {
+            font-size: 1.5rem;
             color: #6d6875;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e5989b;
+        }
+        
+        .upgrades-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            width: 100%;
         }
         
         .upgrade {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ffcdb2;
+            gap: 15px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
         }
         
         .upgrade:hover {
-            background-color: rgba(255, 180, 162, 0.2);
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 1);
         }
         
-        .upgrade:last-child {
-            border-bottom: none;
+        .upgrade-icon {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+        
+        .upgrade-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         
         .upgrade-info {
-            flex: 2;
+            flex: 1;
         }
         
         .upgrade-name {
@@ -174,13 +165,13 @@
         .upgrade-description {
             font-size: 0.9rem;
             color: #b5838d;
+            margin-top: 5px;
         }
         
         .upgrade-cost {
-            flex: 1;
-            text-align: right;
             font-weight: bold;
             color: #e5989b;
+            white-space: nowrap;
         }
         
         .click-effect {
@@ -190,6 +181,7 @@
             font-weight: bold;
             color: #ffb4a2;
             animation: floatUp 1s ease-out;
+            z-index: 10;
         }
         
         @keyframes floatUp {
@@ -203,6 +195,12 @@
             }
         }
         
+        .owned-count {
+            font-size: 0.9rem;
+            color: #6d6875;
+            margin-top: 5px;
+        }
+        
         @media (max-width: 768px) {
             .game-area {
                 flex-direction: column;
@@ -213,9 +211,8 @@
                 height: 250px;
             }
             
-            .cookie::before {
-                width: 230px;
-                height: 230px;
+            .upgrades-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -233,54 +230,15 @@
         <div class="game-area">
             <div class="cookie-container">
                 <div class="cookie" id="cookie">
-                    <div class="cookie-chips">
-                        <div class="chip"></div>
-                        <div class="chip"></div>
-                        <div class="chip"></div>
-                        <div class="chip"></div>
-                        <div class="chip"></div>
-                        <div class="chip"></div>
-                    </div>
+                    <img src="https://raw.githubusercontent.com/Bella288/cookie_clicker/refs/heads/main/images/cookie.png" alt="Cookie">
                 </div>
             </div>
-            
-            <div class="upgrades">
-                <h2>Upgrades</h2>
-                <div class="upgrade" id="cursor-upgrade">
-                    <div class="upgrade-info">
-                        <div class="upgrade-name">Cursor</div>
-                        <div class="upgrade-description">Autoclicks every 10 seconds</div>
-                    </div>
-                    <div class="upgrade-cost">15 cookies</div>
-                </div>
-                <div class="upgrade" id="grandma-upgrade">
-                    <div class="upgrade-info">
-                        <div class="upgrade-name">Grandma</div>
-                        <div class="upgrade-description">A nice grandma to bake cookies</div>
-                    </div>
-                    <div class="upgrade-cost">100 cookies</div>
-                </div>
-                <div class="upgrade" id="farm-upgrade">
-                    <div class="upgrade-info">
-                        <div class="upgrade-name">Farm</div>
-                        <div class="upgrade-description">Grows cookie plants</div>
-                    </div>
-                    <div class="upgrade-cost">500 cookies</div>
-                </div>
-                <div class="upgrade" id="mine-upgrade">
-                    <div class="upgrade-info">
-                        <div class="upgrade-name">Mine</div>
-                        <div class="upgrade-description">Mines cookie dough and chocolate chips</div>
-                    </div>
-                    <div class="upgrade-cost">2000 cookies</div>
-                </div>
-                <div class="upgrade" id="factory-upgrade">
-                    <div class="upgrade-info">
-                        <div class="upgrade-name">Factory</div>
-                        <div class="upgrade-description">Produces large quantities of cookies</div>
-                    </div>
-                    <div class="upgrade-cost">7000 cookies</div>
-                </div>
+        </div>
+        
+        <div class="upgrades-section">
+            <h2 class="section-title">Store</h2>
+            <div class="upgrades-container" id="upgrades-container">
+                <!-- Upgrades will be added here by JavaScript -->
             </div>
         </div>
     </div>
@@ -291,56 +249,292 @@
         let cps = 0;
         let clickValue = 1;
         
-        // Upgrades data
-        const upgrades = {
-            cursor: {
+        // All original Cookie Clicker upgrades and buildings
+        const upgrades = [
+            // Cursors
+            {
+                id: "cursor",
+                name: "Cursor",
+                description: "Autoclicks every 10 seconds",
                 baseCost: 15,
                 cost: 15,
                 count: 0,
                 cps: 0.1,
-                unlocked: true
+                type: "building",
+                icon: "https://raw.githubusercontent.com/Bella288/cookie_clicker/refs/heads/main/images/cursor.png"
             },
-            grandma: {
+            
+            // Grandmas
+            {
+                id: "grandma",
+                name: "Grandma",
+                description: "A nice grandma to bake cookies",
                 baseCost: 100,
                 cost: 100,
                 count: 0,
                 cps: 0.5,
-                unlocked: true
+                type: "building",
+                icon: "https://raw.githubusercontent.com/Bella288/cookie_clicker/refs/heads/main/images/grandma.png"
             },
-            farm: {
+            
+            // Farms
+            {
+                id: "farm",
+                name: "Farm",
+                description: "Grows cookie plants",
                 baseCost: 500,
                 cost: 500,
                 count: 0,
                 cps: 4,
-                unlocked: false
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Farm"
             },
-            mine: {
+            
+            // Mines
+            {
+                id: "mine",
+                name: "Mine",
+                description: "Mines cookie dough and chocolate chips",
                 baseCost: 2000,
                 cost: 2000,
                 count: 0,
                 cps: 10,
-                unlocked: false
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Mine"
             },
-            factory: {
+            
+            // Factories
+            {
+                id: "factory",
+                name: "Factory",
+                description: "Produces large quantities of cookies",
                 baseCost: 7000,
                 cost: 7000,
                 count: 0,
                 cps: 40,
-                unlocked: false
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Factory"
+            },
+            
+            // Banks
+            {
+                id: "bank",
+                name: "Bank",
+                description: "Generates cookies from interest",
+                baseCost: 14000,
+                cost: 14000,
+                count: 0,
+                cps: 100,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Bank"
+            },
+            
+            // Temples
+            {
+                id: "temple",
+                name: "Temple",
+                description: "Full of precious, ancient chocolate",
+                baseCost: 200000,
+                cost: 200000,
+                count: 0,
+                cps: 666,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Temple"
+            },
+            
+            // Wizard Towers
+            {
+                id: "wizard_tower",
+                name: "Wizard Tower",
+                description: "Summons cookies with magic spells",
+                baseCost: 3300000,
+                cost: 3300000,
+                count: 0,
+                cps: 9876,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Wizard"
+            },
+            
+            // Shipments
+            {
+                id: "shipment",
+                name: "Shipment",
+                description: "Brings cookies from the cookie planet",
+                baseCost: 51000000,
+                cost: 51000000,
+                count: 0,
+                cps: 50000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Shipment"
+            },
+            
+            // Alchemy Labs
+            {
+                id: "alchemy_lab",
+                name: "Alchemy Lab",
+                description: "Turns gold into cookies",
+                baseCost: 750000000,
+                cost: 750000000,
+                count: 0,
+                cps: 250000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Alchemy"
+            },
+            
+            // Portals
+            {
+                id: "portal",
+                name: "Portal",
+                description: "Opens a door to the cookie dimension",
+                baseCost: 1000000000000,
+                cost: 1000000000000,
+                count: 0,
+                cps: 1666666,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Portal"
+            },
+            
+            // Time Machines
+            {
+                id: "time_machine",
+                name: "Time Machine",
+                description: "Brings cookies from the past before they were eaten",
+                baseCost: 14000000000000,
+                cost: 14000000000000,
+                count: 0,
+                cps: 123456789,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Time"
+            },
+            
+            // Antimatter Condensers
+            {
+                id: "antimatter_condenser",
+                name: "Antimatter Condenser",
+                description: "Condenses the antimatter in the universe into cookies",
+                baseCost: 170000000000000,
+                cost: 170000000000000,
+                count: 0,
+                cps: 999999999,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Antimatter"
+            },
+            
+            // Prisms
+            {
+                id: "prism",
+                name: "Prism",
+                description: "Converts light into cookies",
+                baseCost: 2100000000000000,
+                cost: 2100000000000000,
+                count: 0,
+                cps: 10000000000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Prism"
+            },
+            
+            // Chancemakers
+            {
+                id: "chancemaker",
+                name: "Chancemaker",
+                description: "Generates cookies out of thin air with a chance of more cookies",
+                baseCost: 26000000000000000,
+                cost: 26000000000000000,
+                count: 0,
+                cps: 100000000000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Chance"
+            },
+            
+            // Fractal Engines
+            {
+                id: "fractal_engine",
+                name: "Fractal Engine",
+                description: "Uses fractal patterns to generate infinite cookies",
+                baseCost: 310000000000000000,
+                cost: 310000000000000000,
+                count: 0,
+                cps: 1000000000000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=Fractal"
+            },
+            
+            // Javascript Consoles
+            {
+                id: "javascript_console",
+                name: "Javascript Console",
+                description: "Generates cookies by running code (not really)",
+                baseCost: 7100000000000000000,
+                cost: 7100000000000000000,
+                count: 0,
+                cps: 10000000000000,
+                type: "building",
+                icon: "https://via.placeholder.com/50?text=JS"
+            },
+            
+            // Upgrades that increase click value
+            {
+                id: "plastic_mouse",
+                name: "Plastic Mouse",
+                description: "The mouse is a bit more comfortable (+0.02 cookies per click)",
+                baseCost: 100,
+                cost: 100,
+                count: 0,
+                type: "upgrade",
+                clickValue: 0.02,
+                icon: "https://via.placeholder.com/50?text=Mouse"
+            },
+            
+            {
+                id: "iron_mouse",
+                name: "Iron Mouse",
+                description: "Heavy but reliable (+0.1 cookies per click)",
+                baseCost: 500,
+                cost: 500,
+                count: 0,
+                type: "upgrade",
+                clickValue: 0.1,
+                icon: "https://via.placeholder.com/50?text=IronMouse"
             }
-        };
+        ];
         
         // DOM elements
         const cookiesElement = document.getElementById('cookies');
         const cpsElement = document.getElementById('cps');
         const cookieElement = document.getElementById('cookie');
+        const upgradesContainer = document.getElementById('upgrades-container');
         
         // Initialize the game
         function init() {
             loadGame();
+            renderUpgrades();
             updateUI();
             setupEventListeners();
             startGameLoop();
+        }
+        
+        // Render upgrades in the UI
+        function renderUpgrades() {
+            upgradesContainer.innerHTML = '';
+            
+            upgrades.forEach(upgrade => {
+                const upgradeElement = document.createElement('div');
+                upgradeElement.className = 'upgrade';
+                upgradeElement.id = `${upgrade.id}-upgrade`;
+                upgradeElement.innerHTML = `
+                    <div class="upgrade-icon">
+                        <img src="${upgrade.icon}" alt="${upgrade.name}">
+                    </div>
+                    <div class="upgrade-info">
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="owned-count">Owned: ${upgrade.count}</div>
+                    </div>
+                    <div class="upgrade-cost">${formatNumber(upgrade.cost)}</div>
+                `;
+                
+                upgradesContainer.appendChild(upgradeElement);
+            });
         }
         
         // Set up event listeners
@@ -349,14 +543,14 @@
             cookieElement.addEventListener('click', handleCookieClick);
             
             // Upgrade click events
-            for (const upgradeId in upgrades) {
-                const upgradeElement = document.getElementById(`${upgradeId}-upgrade`);
+            upgrades.forEach(upgrade => {
+                const upgradeElement = document.getElementById(`${upgrade.id}-upgrade`);
                 if (upgradeElement) {
                     upgradeElement.addEventListener('click', () => {
-                        buyUpgrade(upgradeId);
+                        buyUpgrade(upgrade.id);
                     });
                 }
-            }
+            });
         }
         
         // Handle cookie click
@@ -366,14 +560,16 @@
             // Create click effect
             const clickEffect = document.createElement('div');
             clickEffect.className = 'click-effect';
-            clickEffect.textContent = `+${clickValue}`;
+            clickEffect.textContent = `+${clickValue.toFixed(2)}`;
             clickEffect.style.left = `${event.offsetX - 20}px`;
             clickEffect.style.top = `${event.offsetY - 20}px`;
             cookieElement.appendChild(clickEffect);
             
             // Remove effect after animation completes
             setTimeout(() => {
-                cookieElement.removeChild(clickEffect);
+                if (cookieElement.contains(clickEffect)) {
+                    cookieElement.removeChild(clickEffect);
+                }
             }, 1000);
         }
         
@@ -386,30 +582,21 @@
         
         // Buy an upgrade
         function buyUpgrade(upgradeId) {
-            const upgrade = upgrades[upgradeId];
+            const upgrade = upgrades.find(u => u.id === upgradeId);
             
             if (cookies >= upgrade.cost) {
                 cookies -= upgrade.cost;
                 upgrade.count++;
                 
-                // Increase cost by 15% each purchase
-                upgrade.cost = Math.floor(upgrade.cost * 1.15);
-                
-                // Update CPS
-                cps += upgrade.cps;
-                
-                // Unlock next upgrades if needed
-                if (upgradeId === 'cursor' && upgrade.count >= 1) {
-                    upgrades.grandma.unlocked = true;
-                }
-                if (upgradeId === 'grandma' && upgrade.count >= 1) {
-                    upgrades.farm.unlocked = true;
-                }
-                if (upgradeId === 'farm' && upgrade.count >= 1) {
-                    upgrades.mine.unlocked = true;
-                }
-                if (upgradeId === 'mine' && upgrade.count >= 1) {
-                    upgrades.factory.unlocked = true;
+                // Increase cost by 15% each purchase for buildings
+                if (upgrade.type === "building") {
+                    upgrade.cost = Math.floor(upgrade.cost * 1.15);
+                    cps += upgrade.cps;
+                } else if (upgrade.type === "upgrade") {
+                    // For upgrades, increase click value
+                    clickValue += upgrade.clickValue;
+                    // Mark as purchased by setting cost to Infinity
+                    upgrade.cost = Infinity;
                 }
                 
                 updateUI();
@@ -420,35 +607,44 @@
         // Update the UI
         function updateUI() {
             // Update cookie count and CPS
-            cookiesElement.textContent = Math.floor(cookies);
-            cpsElement.textContent = cps.toFixed(1);
+            cookiesElement.textContent = formatNumber(cookies);
+            cpsElement.textContent = formatNumber(cps);
             
             // Update upgrade buttons
-            for (const upgradeId in upgrades) {
-                const upgrade = upgrades[upgradeId];
-                const upgradeElement = document.getElementById(`${upgradeId}-upgrade`);
+            upgrades.forEach(upgrade => {
+                const upgradeElement = document.getElementById(`${upgrade.id}-upgrade`);
                 
                 if (upgradeElement) {
                     // Update cost display
                     const costElement = upgradeElement.querySelector('.upgrade-cost');
                     if (costElement) {
-                        costElement.textContent = `${Math.floor(upgrade.cost)} cookies`;
+                        costElement.textContent = `${formatNumber(upgrade.cost)}`;
                     }
                     
-                    // Grey out if not enough cookies or not unlocked
-                    if (cookies < upgrade.cost || !upgrade.unlocked) {
+                    // Update owned count
+                    const ownedElement = upgradeElement.querySelector('.owned-count');
+                    if (ownedElement) {
+                        ownedElement.textContent = `Owned: ${upgrade.count}`;
+                    }
+                    
+                    // Grey out if not enough cookies
+                    if (cookies < upgrade.cost) {
                         upgradeElement.style.opacity = '0.5';
                     } else {
                         upgradeElement.style.opacity = '1';
                     }
-                    
-                    // Show count if purchased
-                    const nameElement = upgradeElement.querySelector('.upgrade-name');
-                    if (nameElement && upgrade.count > 0) {
-                        nameElement.textContent = `Cursor (${upgrade.count})`;
-                    }
                 }
-            }
+            });
+        }
+        
+        // Format large numbers with commas
+        function formatNumber(num) {
+            if (num < 1000) return Math.floor(num);
+            if (num < 1000000) return (num/1000).toFixed(1) + 'K';
+            if (num < 1000000000) return (num/1000000).toFixed(1) + 'M';
+            if (num < 1000000000000) return (num/1000000000).toFixed(1) + 'B';
+            if (num < 1000000000000000) return (num/1000000000000).toFixed(1) + 'T';
+            return (num/1000000000000000).toFixed(1) + 'Q';
         }
         
         // Game loop for passive cookie generation
@@ -463,6 +659,7 @@
             const gameData = {
                 cookies,
                 cps,
+                clickValue,
                 upgrades
             };
             localStorage.setItem('cookieClickerSave', JSON.stringify(gameData));
@@ -475,14 +672,16 @@
                 const gameData = JSON.parse(savedGame);
                 cookies = gameData.cookies || 0;
                 cps = gameData.cps || 0;
+                clickValue = gameData.clickValue || 1;
                 
                 // Load upgrades
-                for (const upgradeId in gameData.upgrades) {
-                    if (upgrades[upgradeId]) {
-                        upgrades[upgradeId].count = gameData.upgrades[upgradeId].count || 0;
-                        upgrades[upgradeId].cost = gameData.upgrades[upgradeId].cost || upgrades[upgradeId].baseCost;
-                        upgrades[upgradeId].unlocked = gameData.upgrades[upgradeId].unlocked || false;
-                    }
+                if (gameData.upgrades) {
+                    gameData.upgrades.forEach((savedUpgrade, index) => {
+                        if (upgrades[index]) {
+                            upgrades[index].count = savedUpgrade.count || 0;
+                            upgrades[index].cost = savedUpgrade.cost || upgrades[index].baseCost;
+                        }
+                    });
                 }
             }
         }
